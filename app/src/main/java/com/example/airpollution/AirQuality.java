@@ -99,6 +99,8 @@ public class AirQuality implements Serializable {
     public void setNh3(double nh3) {
         this.nh3 = nh3;
     }
+
+
 }
 
 

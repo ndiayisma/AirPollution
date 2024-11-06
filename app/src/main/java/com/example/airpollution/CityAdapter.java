@@ -1,4 +1,4 @@
-package com.example.airpollution;
+/*package com.example.airpollution;
 
 import android.content.Context;
 import android.view.ViewGroup;
@@ -36,5 +36,5 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
 
     /*public class CityViewHolder extends RecyclerView.ViewHolder {
 
-    }*/
-}
+    }
+}*/
