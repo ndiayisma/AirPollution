@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.airpollution.databinding.ActivityMainBinding;
 
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private OpenWeatherServices openWeatherServices;
     private List<City> cityList;
+    private CityAdapter cityAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,20 +48,18 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Initialiser Retrofit
-        /*Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.openweathermap.org/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        openWeatherServices = retrofit.create(OpenWeatherServices.class);*/
-
         // Initialiser la liste des villes
         cityList = new ArrayList<>();
         cityList.add(new City("London", 51.5085, -0.1257));
         cityList.add(new City("Paris", 48.8566, 2.3522));
 
-        // Configurer le Spinner
+        // Set up RecyclerView
+        RecyclerView recyclerViewCity = binding.recyclerViewCity;
+        recyclerViewCity.setLayoutManager(new LinearLayoutManager(this));
+        cityAdapter = new CityAdapter(cityList);
+        recyclerViewCity.setAdapter(cityAdapter);
+
+        /* Configurer le Spinner
         Spinner spinnerCity = binding.spinnerCity;
         ArrayAdapter<City> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cityList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
                 // Do nothing
             }
-        });
+        });*/
     }
 
     private void fetchAirQualityData(double lat, double lon) {
@@ -102,13 +103,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUI(City cityResponse) {
-        TextView tvCity = binding.tvCity;
-        TextView tvLatitude = binding.tvLatitude;
-        TextView tvLongitude = binding.tvLongitude;
+        RecyclerView recyclerViewCity = binding.recyclerViewCity;
 
         //tvCity.setText("City: " + airQualityResponse.getCoord().getLat() + ", " + airQualityResponse.getCoord().getLon());
-        tvLatitude.setText("Latitude: " + cityResponse.getCoord().getLat());
-        tvLongitude.setText("Longitude: " + cityResponse.getCoord().getLon());
+        //tvLatitude.setText("Latitude: " + cityResponse.getCoord().getLat());
+        //tvLongitude.setText("Longitude: " + cityResponse.getCoord().getLon());
 
 
     }

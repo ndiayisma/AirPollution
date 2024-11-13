@@ -5,6 +5,11 @@ import java.util.ArrayList;
 
 public class City implements Serializable {
     private Coord coord;
+
+    public String getName() {
+        return name;
+    }
+
     private String name;
     private double lat;
     private double lon;
