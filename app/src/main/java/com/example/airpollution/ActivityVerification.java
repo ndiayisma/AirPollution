@@ -1,6 +1,7 @@
 package com.example.airpollution;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,12 +17,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ActivityVerification extends AppCompatActivity {
 
     private OpenWeatherServices openWeatherServices;
+    private City city;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_verification);
+
+        double lat = getIntent().getDoubleExtra("latitude", 0);
+        double lon = getIntent().getDoubleExtra("longitude", 0);
+
 
         // Initialize Retrofit
         Retrofit retrofit = new Retrofit.Builder()
@@ -31,7 +37,8 @@ public class ActivityVerification extends AppCompatActivity {
         openWeatherServices = retrofit.create(OpenWeatherServices.class);
 
         // Fetch AirQuality data
-        fetchAirQualityData(51.5085, -0.1257); // Example coordinates for London
+
+        fetchAirQualityData(lat, lon); // Example coordinates for London
     }
 
     private void fetchAirQualityData(double lat, double lon) {
@@ -60,14 +67,16 @@ public class ActivityVerification extends AppCompatActivity {
         TextView tvSo2 = findViewById(R.id.so2);
         TextView tvAqi = findViewById(R.id.aqi);
         TextView wtd = findViewById(R.id.wtd);
+        ImageView imageView = findViewById(R.id.imageView);
 
         tvCo.setText("CO: " + airQuality.getCo());
         tvNo.setText("NO: " + airQuality.getNo());
         tvSo2.setText("SO2: " + airQuality.getSo2());
         tvAqi.setText("AQI: " + airQuality.getAqi());
 
-        if(airQuality.getAqi() < 2){
+        if(airQuality.getAqi() <= 2){
             wtd.setText("L'air est pur et sans danger pour la santé");
+            imageView.setImageResource(R.drawable.cleanup);
         } else {
             wtd.setText("L'air est pollué et peut être dangereux pour la santé");
         }

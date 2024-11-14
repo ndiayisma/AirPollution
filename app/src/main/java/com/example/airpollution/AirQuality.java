@@ -1,18 +1,24 @@
 package com.example.airpollution;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class AirQuality implements Serializable {
 
+    @SerializedName("co")
     private double co;
+    @SerializedName("no")
     private double no;
     private double no2;
     private double o3;
+    @SerializedName("so2")
     private double so2;
     private double pm2_5;
     private double pm10;
     private double nh3;
 
+    @SerializedName("aqi")
     private int aqi;
 
     // Getters and setters
