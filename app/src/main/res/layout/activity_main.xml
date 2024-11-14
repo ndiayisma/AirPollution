@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <!-- ImageView
     <TextView
         android:id="@+id/titre"
         android:layout_width="match_parent"
@@ -18,7 +19,7 @@
         android:textColor="@color/white"
         android:gravity="center"
         android:padding="15sp"
-        />
+        />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCity"

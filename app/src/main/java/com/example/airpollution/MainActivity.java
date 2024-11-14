@@ -1,5 +1,6 @@
 package com.example.airpollution;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,6 +10,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -33,6 +37,14 @@ public class MainActivity extends AppCompatActivity {
     private OpenWeatherServices openWeatherServices;
     private List<City> cityList;
     private CityAdapter cityAdapter;
+    private ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == 1) {
+            Intent resultIntent = result.getData();
+            City city = (City) resultIntent.getSerializableExtra("city");
+            cityList.add(city);
+            cityAdapter.notifyDataSetChanged();
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         // Set up RecyclerView
         RecyclerView recyclerViewCity = binding.recyclerViewCity;
         recyclerViewCity.setLayoutManager(new LinearLayoutManager(this));
-        cityAdapter = new CityAdapter(cityList);
+        cityAdapter = new CityAdapter(cityList, this);
         recyclerViewCity.setAdapter(cityAdapter);
 
         /* Configurer le Spinner
@@ -104,6 +116,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateUI(City cityResponse) {
         RecyclerView recyclerViewCity = binding.recyclerViewCity;
+
+        binding.recyclerViewCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(getApplicationContext(), ActivityVerification.class);
+                activityResultLauncher.launch(myIntent);
+            }
+        });
 
         //tvCity.setText("City: " + airQualityResponse.getCoord().getLat() + ", " + airQualityResponse.getCoord().getLon());
         //tvLatitude.setText("Latitude: " + cityResponse.getCoord().getLat());
